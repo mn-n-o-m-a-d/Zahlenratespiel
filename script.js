@@ -1,31 +1,43 @@
-
-const randomNumber = Math.floor(Math.random * 100 + 1);
-let inputNumber;
-
-
-do {
-
-    const inputString = prompt('Bitte geben Sie eine Zahl zwischen 1 und 100 ein:');
-
-    if (inputString === null) {
-        break;
+function output(text) {
+    $(".output").text(text);
+  }
+  
+  // 1. Zahl ausdenken
+  const zufallsZahl = Math.floor(Math.random() * 100 + 1);
+  let zahl;
+  
+  function handleFormSubmit(e) {
+    
+    e.preventDefault();
+    
+    // 2. Benutzer nach Zahl fragen
+    const eingabe = $("input[name='text']").val();
+  
+    zahl = parseInt(eingabe);
+  
+    if (isNaN(zahl)) {
+      output("Geben Sie eine gültige Zahl ein.");
+      // Zurück zu Schritt 2
+      return;
     }
-
-    inputNumber = parseInt(inputString);
-
-    if (isNaN(inputNumber)) {
-        alert(inputNumber + ' <- Bitte geben Sie eine gültige Zahl ein!');
-        continue;
-    }
-
-    if (inputNumber < randomNumber) {
-        alert(inputNumber + ' <- ist zu klein, bitte geben Sie eine größere Zahl ein!');
-    } else if (inputNumber > randomNumber) {
-        alert(inputNumber + ' <- ist zu groß, bitte geben Sie eine kleinere Zahl ein!');
+  
+    // 3. Zahl vergleichen
+    // 3a. Eingegebene Zahl ist kleiner → Die gesuchte Zahl ist größer.
+  
+    if (zahl < zufallsZahl) {
+      output("Die gesuchte Zahl ist größer.");
+  
+      // 3b. Eingegebene Zahl ist größer → Die gesuchte Zahl ist kleiner.
+    } else if (zahl > zufallsZahl) {
+      output("Die gesuchte Zahl ist kleiner.");
     } else {
-        alert(inputNumber + ' ist die richtige Zahl!');
+      // 5. → Sie haben die Zahl erraten.
+      output("Sie haben die Zahl erraten.");
     }
-
-
-} while (inputNumber !== randomNumber);
-
+    // 4. Wenn die Zahl nicht erraten wurde, wiederholen ab 2
+    
+    $("input[name='text']").trigger("focus").select();
+    
+  }
+  
+  $("#form").on("submit", handleFormSubmit);
